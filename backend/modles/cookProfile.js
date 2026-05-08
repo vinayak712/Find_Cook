@@ -37,46 +37,43 @@ const CookPrfileSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    foodImages: [
+      {
+        url: String,
+        caption: String,
+        uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      }
+    ],
     rating: {
       type: Number,
       default: 0,
     },
+    reviews: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        rating: {
+          type: Number,
+          required: true,
+          min: 1,
+          max: 5,
+        },
+        comment: String,
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      }
+    ],
   },
   { timestamps: true },
 );
 const CookProfile = mongoose.model("CookProfile", CookPrfileSchema);
 
-const bookingSchema = mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    cook: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "CookProfile",
-      required: true,
-    },
-    bookingDates: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["pending", "accepted", "rejected", "completed"],
-      default: "pending",
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-
-    message: {
-      type: String,
-    },
-  },
-  { timestamps: true },
-);
-("Booking", bookingSchema);
 export default CookProfile;

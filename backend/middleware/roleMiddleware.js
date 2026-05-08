@@ -2,7 +2,7 @@ const authorizeRoles = (...roles) => {
     return (req, res, next) => {
         try {
             if (!req.user || !req.user.role) {
-                res.status(401).json({ message: "Unauthorized - No User Data" });
+                return res.status(401).json({ message: "Unauthorized - No User Data" });
             }
            // Check if user role is allowed
       if (!roles.includes(req.user.role)) {

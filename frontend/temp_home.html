@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#191c1d",
+                    "on-tertiary-fixed-variant": "#404758",
+                    "surface": "#f8f9fa",
+                    "background": "#f8f9fa",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#f8f9fa",
+                    "outline": "#6d7a72",
+                    "primary-fixed-dim": "#68dba9",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e1e3e4",
+                    "inverse-surface": "#2e3132",
+                    "primary-fixed": "#85f8c4",
+                    "on-tertiary-container": "#fefcff",
+                    "inverse-on-surface": "#f0f1f2",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-container-low": "#f3f4f5",
+                    "surface-tint": "#006c4a",
+                    "secondary": "#855300",
+                    "surface-dim": "#d9dadb",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#dce2f7",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "error": "#ba1a1a",
+                    "primary": "#006948",
+                    "outline-variant": "#bccac0",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fea619",
+                    "inverse-primary": "#68dba9",
+                    "surface-container-high": "#e7e8e9",
+                    "on-surface-variant": "#3d4a42",
+                    "tertiary": "#555c6e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#f5fff7",
+                    "tertiary-container": "#6e7487",
+                    "tertiary-fixed-dim": "#c0c6db",
+                    "primary-container": "#00855d",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface": "#191c1d",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#002114",
+                    "surface-container": "#edeeef",
+                    "on-tertiary-fixed": "#141b2b",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-primary-fixed-variant": "#005137"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "4rem",
+                    "xs": "0.5rem",
+                    "gutter": "1.5rem",
+                    "md": "1.5rem",
+                    "container-max": "1280px",
+                    "sm": "1rem",
+                    "base": "4px",
+                    "lg": "2.5rem"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "title-sm": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "caption": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["30px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar -->
+<header class="absolute top-0 w-full z-50 bg-transparent font-['Plus_Jakarta_SANS'] antialiased">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-6 h-20">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tight text-white">ChefConnect</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-white font-semibold border-b-2 border-orange-500 pb-1 hover:text-orange-400 transition-colors duration-200" href="#">Home</a>
+<a class="text-white/80 font-medium hover:text-white transition-colors duration-200" href="#">About</a>
+<a class="text-white/80 font-medium hover:text-white transition-colors duration-200" href="#">Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
+<span class="material-symbols-outlined text-white/70 mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-white placeholder-white/70" placeholder="Cuisine or Chef name..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="hidden sm:block text-white/90 font-medium px-4 py-2 hover:text-white transition-all active:scale-95">Login</button>
+<button class="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-600 transition-all active:scale-95">Sign Up</button>
+<span class="material-symbols-outlined text-white cursor-pointer p-1 hover:text-orange-400 transition-colors" data-icon="notifications">notifications</span>
+</div>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[700px] flex items-center overflow-hidden bg-gray-900">
+<img alt="Professional chef cooking in a dark modern kitchen" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSxj0lPbZHRk1En9HQH-gNPAuEDHIpm_mHaAqCCqzWOPZsUXvhK7j7ZYvQHH6C8qYNLEaE7k3bF1VAs765-Q95irq8uEIE0NcJx-NMre9xb3yEgWes4zA1rN8cyaxmud4jFIz_Kv7JJAdY3QMzoOIFK22UmkHRbqfu1YVeMqayrmpMnz4tCNwELB2pL8OhfL5OQZFedD6XmADWRnXJSe64qiytV6DJmwDpPUas6npSC26yJyJvAe0aQBTVFKEpLIHCQCCvm3BAa34"/>
+<div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/60 to-transparent z-0"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10 w-full pt-20">
+<div class="max-w-2xl space-y-8">
+<h1 class="font-display-lg text-5xl md:text-6xl text-white font-bold leading-tight">
+                        Book Professional Cook <br/>
+<span class="text-orange-500">At Your Home.</span>
+</h1>
+<p class="text-body-lg text-gray-200 text-xl max-w-lg font-light">
+                        From daily meals to special occasions
+                    </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="bg-orange-500 text-white px-8 py-3.5 rounded-xl font-bold text-body-md hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-orange-500/20">
+                            Find Cook
+                        </button>
+<button class="bg-transparent border-2 border-white text-white px-8 py-3.5 rounded-xl font-bold text-body-md hover:bg-white/10 transition-all active:scale-95 backdrop-blur-sm">
+                            Become a Cook
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- How it works -->
+<section class="py-xl bg-surface">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-on-background mb-4">Simple Steps to Gourmet Dining</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">We've streamlined the process of finding professional culinary talent for your home.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="group text-center space-y-6">
+<div class="w-20 h-20 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-3xl" data-icon="search">search</span>
+</div>
+<h3 class="font-title-sm text-title-sm text-on-background">Search</h3>
+<p class="text-body-md text-on-surface-variant">Browse through our curated list of professional cooks based on cuisine, experience, and ratings.</p>
+</div>
+<div class="group text-center space-y-6">
+<div class="w-20 h-20 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-3xl" data-icon="calendar_today">calendar_today</span>
+</div>
+<h3 class="font-title-sm text-title-sm text-on-background">Book</h3>
+<p class="text-body-md text-on-surface-variant">Select your preferred date and time. Securely book and communicate directly with your chosen chef.</p>
+</div>
+<div class="group text-center space-y-6">
+<div class="w-20 h-20 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-3xl" data-icon="star">star</span>
+</div>
+<h3 class="font-title-sm text-title-sm text-on-background">Enjoy</h3>
+<p class="text-body-md text-on-surface-variant">Relax and savor a professionally prepared meal in the comfort of your own home.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Cooks -->
+<section class="py-xl">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-background">Featured Professional Cooks</h2>
+<p class="text-on-surface-variant mt-2">The highest rated culinary experts in your area.</p>
+</div>
+<button class="text-primary font-bold flex items-center gap-2 hover:underline">
+                        View All
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Cook Card 1 -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all">
+<div class="aspect-[4/5] relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A portrait of a professional female chef with a friendly expression, standing in a brightly lit, modern gourmet kitchen. She is wearing a crisp white double-breasted chef's jacket. The lighting is soft and airy, creating a high-end professional feel with a clean, minimalist aesthetic and emerald green accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC79uLEguuD11B4QRQH0FY7WyCdxh9dlLCSACIMIua5ACOtXbKbIcu_lOFAQ3eVVJgMM39JlZkHJKXyCksJfbpipGzjHCtcdTkwtFn0zhSRlTNWnSxPaHhnBbo5wqiUla9eZUUSqRdJmgW_JZyib4_iBl48i39h1u22Sr5WYL1-ZiG-5XnjTVP41KGr3Meu2sP3RIQLkCwL_B7IOL2iUuORttlVFihxBi9LIveYrlh0wN_D1dmmRFipi2hDfDWRDx7JDX-Pf7IlaOY"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="text-xs font-bold text-on-background">4.9</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-background">Chef Elena Rossi</h4>
+<p class="text-caption text-on-surface-variant">12 years experience</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill">verified</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Italian</span>
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Seafood</span>
+</div>
+</div>
+</div>
+<!-- Cook Card 2 -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all">
+<div class="aspect-[4/5] relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A middle-aged professional male chef with a focused look, plating a delicate dish in a high-tech kitchen environment. The scene is illuminated by precise spotlights that create high contrast and a premium, dependable mood. The color palette features whites, grays, and deep forest green accents, highlighting culinary excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNje2Pv1N4vOT-qj7NJByrN3SEnxaJ_T0W5UrnEvT3T6anwjFRGI2bYMjqQJr9v3i-dhJHOuokug8WEobdy9UPgGu-03k0KYkVeQiWgv8yOkg9PPey-gzIjQXBBQP0xr5G0TPviMcgUYEcVa6PVVYgnk567Sn88-qD10oNV9S3-TcAkbeDtUWo08hx4rbkSrVLDmsAWAIOla_UX_P7MxGqxJn8QwRJPuUaNsUfRJZeFZSh7zaQB6g21ig12yJVs71GREjK5n9UIHw"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="text-xs font-bold text-on-background">5.0</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-background">Chef Marcus Chen</h4>
+<p class="text-caption text-on-surface-variant">8 years experience</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill">verified</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Asian Fusion</span>
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Pastry</span>
+</div>
+</div>
+</div>
+<!-- Cook Card 3 -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all">
+<div class="aspect-[4/5] relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A young, enthusiastic female chef wearing a clean denim apron over a white shirt, holding a basket of fresh colorful vegetables in a sunlit farmhouse kitchen. The aesthetic is bright, natural, and trustworthy, with a focus on organic ingredients and healthy living. The lighting is soft and golden, using a minimalist modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfK8jR-TjXaBmFE5hWWo-MhbOkBxCrrCJvLrzI6-kzp9URpQq_YWOzjzGhojYsWre8hIN1q45Elh9ngdMTvEpcT_zaP6lghEjPO8haJHgQ6zdULRq_2Fkb0n2qorDxzcEsSmJvUCQdB9j2ZG_kDdu9hJCEPd4Ez3bcNX6arZ6Vyns8QxyUzes7AJRep5tcxcoNDH_xxWBMV0OwMq0PO_2tBCPBmZX9iPsKqWbykwI1Xq6XamFXcIKYPcuf8U3ubjWE6r3Hb7_NVTU"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="text-xs font-bold text-on-background">4.8</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-background">Chef Sarah Jenkins</h4>
+<p class="text-caption text-on-surface-variant">15 years experience</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill">verified</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Plant-Based</span>
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Organic</span>
+</div>
+</div>
+</div>
+<!-- Cook Card 4 -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all">
+<div class="aspect-[4/5] relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A distinguished male chef with silver hair, looking professional and trustworthy in a dark navy apron, standing in a sophisticated professional kitchen with stainless steel surfaces. The mood is high-end and disciplined, with bright, clean lighting that emphasizes the quality and expertise of the service. Emerald green highlights appear in the brand's subtle styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX-2Alf5Ac6GIzOupxwD0GBjMDY1qO4KXuN6zDQRFr_G9gOcgYhzbRJgNjvJ3AaalND5lMMDCkMGSCLfZIg_5tVlmd2gprZ0VfU4qjriMt7n2Unym8SmLtI9YuXHlK2n5JcODtQ_hNckWJquu3_r8KOL_qCTwM5EnhbEBQD5J5CE7LhPs_S2RaSt5h2TJbcHxPTTwYBSTKR-bNEeRoQ_rJbsjAdK2nYxwzGxiTP_t6MmbA4bpHXrJADyNdlXclJcQzHu4Eoo95FX4"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="text-xs font-bold text-on-background">4.9</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-background">Chef David Miller</h4>
+<p class="text-caption text-on-surface-variant">20 years experience</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill">verified</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">French</span>
+<span class="px-2 py-1 bg-gray-100 rounded text-[10px] font-bold text-gray-600">Grill</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Become a Cook CTA -->
+<section class="py-xl">
+<div class="max-w-7xl mx-auto px-6">
+<div class="relative bg-on-primary-fixed overflow-hidden rounded-[2rem] p-12 lg:p-20 flex flex-col lg:flex-row items-center gap-12">
+<div class="relative z-10 space-y-6 lg:w-3/5 text-center lg:text-left">
+<h2 class="text-white font-display-lg text-4xl lg:text-5xl font-extrabold leading-tight">
+                            Turn Your Culinary Passion into a Career.
+                        </h2>
+<p class="text-emerald-100 text-body-lg max-w-xl">
+                            Join our community of professional cooks. Manage your own schedule, set your rates, and showcase your skills to thousands of local clients.
+                        </p>
+<div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-xl font-bold text-body-md hover:bg-emerald-500 transition-all active:scale-95">
+                                Become a Cook
+                            </button>
+<button class="bg-transparent border border-white/30 text-white px-10 py-4 rounded-xl font-bold text-body-md hover:bg-white/10 transition-all">
+                                Learn More
+                            </button>
+</div>
+</div>
+<div class="relative lg:w-2/5 flex justify-center">
+<div class="relative w-64 h-64 lg:w-80 lg:h-80 bg-emerald-500/20 rounded-full border border-emerald-500/30 flex items-center justify-center p-4">
+<div class="w-full h-full rounded-full overflow-hidden border-4 border-emerald-500/50">
+<img class="w-full h-full object-cover" data-alt="A joyful chef tossing fresh greens in a pan over a glowing stove flame. The photograph captures dynamic movement and energy in a modern kitchen setting. The lighting is warm and cinematic, using a professional-grade aesthetic with emerald green and gold highlights, expressing the vibrancy and success of joining the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApINDWc4yNzE0BqoqWPNNemcIkMEkaaLh8pCldp0nSzk7PVnH9DVj04wmLLfSTmNFao71VSbATHtbr07Kt6c4HdbH-yhvpx97mMkA8VLN2kbr2uFHUIXhAQ_wV2BKTfmEp4Q0PThUfq2cpYFABD2jdAA45M9vLSovcgMVdVbjXQ6u5mlwOtUjLdXixXrVxKkg_smvd7o8FE2k2m9ND3OTClPVHCm--6Pz774ZtXKOkNHJM6Oowv3kaPBt2sOLcOy16TWiK2qAOz2Q"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 font-['Plus_Jakarta_SANS'] text-sm">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-6">
+<span class="font-bold text-gray-900 dark:text-white text-xl">ChefConnect</span>
+<p class="text-gray-500 dark:text-gray-400 max-w-xs">
+                    © 2024 ChefConnect. Culinary excellence delivered. Bringing professional dining experiences to your home kitchen.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-emerald-600 hover:border-emerald-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="facebook">social_leaderboard</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-emerald-600 hover:border-emerald-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="instagram">retweet</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-4">
+<h5 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs">Platform</h5>
+<ul class="space-y-2">
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Find Cooks</a></li>
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">How it Works</a></li>
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Become a Cook</a></li>
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Safety Guidelines</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs">Legal</h5>
+<ul class="space-y-2">
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Terms of Service</a></li>
+<li><a class="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors" href="#">Support</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

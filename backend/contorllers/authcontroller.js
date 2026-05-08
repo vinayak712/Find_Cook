@@ -1,6 +1,6 @@
-import { User } from "../modles/user"
+import { User } from "../modles/user.js"
 import jwt from 'jsonwebtoken'
-import bcrypt from'bcryptjs'
+import bcrypt from 'bcryptjs'
 
 const generateToken = (id, role)=>{
     return jwt.sign(
@@ -55,11 +55,11 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user) {
-            res.status(400).json({ message: "Invalid Email or Password" });
+            return res.status(400).json({ message: "Invalid Email or Password" });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            res.status(400).json({message:"Invaild Password"})
+            return res.status(400).json({message:"Invaild Password"})
         }
         const token = generateToken(user._id, user.role);
 
@@ -70,7 +70,7 @@ const login = async (req, res) => {
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
-        res.status(201).json({
+        res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email,
