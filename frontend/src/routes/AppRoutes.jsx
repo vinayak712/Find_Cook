@@ -16,7 +16,7 @@ import AIMenu from '../Pages/User/aimenu';
 import CookDashboard from '../Pages/Cook/cookDashboard';
 import CookProfile from '../Pages/Cook/cookProfile';
 import EditProfile from '../Pages/Cook/Editprofile';
-import CookBookings from '../Pages/Cook/CookBookings';
+import CookBookings from '../Pages/Cook/cookBookings';
 import FoodGallery from '../Pages/Cook/foodGallery';
 import CookReviews from '../Pages/Cook/cookReviews';
 

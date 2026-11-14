@@ -264,11 +264,25 @@ const getFavorites = async (req, res) => {
 
 const getCookById = async (req, res) => {
     try {
-        const profile = await CookProfile.findById(req.params.id)
-            .populate("user", "name email")
-            .populate("reviews.user", "name");
+        const { id } = req.params;
+        let profile = null;
+
+        // Try searching by CookProfile _id
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            profile = await CookProfile.findById(id)
+                .populate("user", "name email")
+                .populate("reviews.user", "name");
+            
+            // If not found by profile id, try searching by user id
+            if (!profile) {
+                profile = await CookProfile.findOne({ user: id })
+                    .populate("user", "name email")
+                    .populate("reviews.user", "name");
+            }
+        }
+
         if (!profile) {
-            return res.status(404).json({ message: "Cook not found" });
+            return res.status(404).json({ message: "Cook profile not found" });
         }
         res.json(profile);
     } catch (error) {

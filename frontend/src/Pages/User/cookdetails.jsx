@@ -66,7 +66,8 @@ export default function CookDetails() {
         setCook(res.data);
         setProposedPrice(res.data.pricePerDay);
       } catch (err) {
-        setError('Failed to load cook details');
+        console.error("Error loading cook details:", err);
+        setError(err.response?.data?.message || 'Failed to load cook details');
       } finally {
         setLoading(false);
       }
