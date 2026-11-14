@@ -77,8 +77,12 @@ export default function CookProfile() {
           {/* Banner */}
           <div className="h-32 bg-gradient-to-r from-primary to-emerald-400 relative">
             <div className="absolute -bottom-8 left-8">
-              <div className="w-16 h-16 rounded-2xl bg-white border-4 border-white shadow-md flex items-center justify-center text-primary font-bold text-2xl">
-                {profile.user?.name?.charAt(0)?.toUpperCase() || 'C'}
+              <div className="w-24 h-24 rounded-3xl bg-primary/20 flex flex-shrink-0 items-center justify-center text-primary font-bold text-4xl shadow-inner overflow-hidden border border-primary/30">
+                {profile.profileImage ? (
+                  <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  profile.user?.name?.charAt(0)?.toUpperCase() || 'C'
+                )}
               </div>
             </div>
           </div>
@@ -116,7 +120,7 @@ export default function CookProfile() {
               </div>
               <div className="bg-surface rounded-xl p-4 border border-outline-variant">
                 <p className="text-xs text-on-surface-variant mb-1">Daily Rate</p>
-                <p className="font-bold text-primary text-lg">${profile.pricePerDay}</p>
+                <p className="font-bold text-primary text-lg">₹{profile.pricePerDay}</p>
               </div>
               <div className="bg-surface rounded-xl p-4 border border-outline-variant">
                 <p className="text-xs text-on-surface-variant mb-1">Specialties</p>

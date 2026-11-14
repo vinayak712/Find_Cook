@@ -109,7 +109,7 @@ export default function CookDashboard() {
               Welcome back
             </p>
             <h1 className="text-2xl lg:text-3xl font-bold mb-3">
-              Chef {user?.name?.split(" ")[0]} 👨‍🍳
+              Chef {user?.name ? user.name.split(" ")[0] : "Guest"} 👨‍🍳
             </h1>
             <div className="flex gap-2 flex-wrap">
               <button
@@ -218,7 +218,7 @@ export default function CookDashboard() {
                     <div className="h-7 w-16 bg-gray-200 animate-pulse rounded" />
                   ) : (
                     <p className="text-3xl font-bold text-emerald-600">
-                      ${stats.earnings}
+                      ₹{stats.earnings}
                     </p>
                   )}
                 </div>
@@ -328,7 +328,7 @@ export default function CookDashboard() {
                         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
                           <div className="text-right">
                             <p className="font-bold text-lg text-primary">
-                              ${b.price}
+                              ₹{b.price}
                             </p>
                           </div>
                           <span
@@ -371,7 +371,7 @@ export default function CookDashboard() {
                     Total Earnings
                   </p>
                   <p className="text-3xl font-bold text-green-700 mb-2">
-                    ${stats.earnings}
+                    ₹{stats.earnings}
                   </p>
                   <p className="text-xs text-green-600/80 font-medium">
                     {allBookings.filter((b) => b.status === "completed").length}{" "}
@@ -390,7 +390,7 @@ export default function CookDashboard() {
                     Pending Earnings
                   </p>
                   <p className="text-3xl font-bold text-amber-600 mb-2">
-                    ${earningsByStatus.accepted}
+                    ₹{earningsByStatus.accepted}
                   </p>
                   <p className="text-xs text-amber-600/80 font-medium">
                     {allBookings.filter((b) => b.status === "accepted").length}{" "}
@@ -409,7 +409,7 @@ export default function CookDashboard() {
                     Avg per Booking
                   </p>
                   <p className="text-3xl font-bold text-purple-600 mb-2">
-                    $
+                    ₹
                     {allBookings.filter((b) => b.status === "completed")
                       .length > 0
                       ? Math.round(
@@ -487,7 +487,7 @@ export default function CookDashboard() {
                           <div className="flex items-center gap-3 flex-shrink-0 ml-3">
                             <div className="text-right">
                               <p className="font-bold text-lg text-green-600">
-                                ${b.price}
+                                ₹{b.price}
                               </p>
                               {b.message && (
                                 <p className="text-xs text-on-surface-variant max-w-[100px] truncate">
@@ -559,7 +559,7 @@ export default function CookDashboard() {
                       <div className="flex items-center gap-3 flex-shrink-0 ml-3">
                         <div className="text-right">
                           <p className="font-bold text-lg text-primary">
-                            ${b.price}
+                            ₹{b.price}
                           </p>
                         </div>
                         <span

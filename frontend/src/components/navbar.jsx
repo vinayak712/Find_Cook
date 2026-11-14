@@ -1,11 +1,30 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authStore";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Navbar({ transparent = false }) {
   const { user } = useContext(AuthContext);
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const [unreadCount, setUnreadCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!user) return;
+    const fetchUnreadCount = async () => {
+      try {
+        const { default: api } = await import("../api/axios");
+        const res = await api.get("/notifications/unread-count");
+        setUnreadCount(res.data.count);
+      } catch (err) {
+        console.error("Failed to fetch unread count:", err);
+      }
+    };
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 15000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   const headerClass = transparent 
     ? "absolute top-0 w-full z-50 bg-transparent font-['Plus_Jakarta_SANS'] antialiased"
@@ -63,7 +82,14 @@ export default function Navbar({ transparent = false }) {
             {user ? (
               <div className="flex items-center gap-4">
                 <span className={`hidden sm:inline-block text-sm font-medium ${textColor}`}>Hi, {user.name}</span>
-                <span className={`material-symbols-outlined cursor-pointer p-1 transition-colors ${transparent ? 'text-white hover:text-orange-400' : 'text-gray-600 hover:text-primary'}`} data-icon="notifications">notifications</span>
+                <Link to="/notifications" className="relative group flex items-center justify-center">
+                  <span className={`material-symbols-outlined cursor-pointer p-1 transition-colors ${transparent ? 'text-white hover:text-orange-400' : 'text-gray-600 hover:text-primary'}`} data-icon="notifications">notifications</span>
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white font-extrabold text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white animate-pulse">
+                      {unreadCount}
+                    </span>
+                  )}
+                </Link>
                 <button 
                   onClick={logout}
                   className={btnClass}

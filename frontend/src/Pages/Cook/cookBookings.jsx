@@ -91,7 +91,7 @@ export default function CookBookings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs text-on-surface-variant">Proposed Price</p>
-                      <p className="text-xl font-bold text-primary">${booking.price || 'N/A'}</p>
+                      <p className="text-xl font-bold text-primary">₹{booking.price || 'N/A'}</p>
                     </div>
 
                     {booking.status === 'pending' && (

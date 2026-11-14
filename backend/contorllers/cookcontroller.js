@@ -1,29 +1,31 @@
 import CookProfile from "../modles/cookProfile.js";
 import cloudinary from "../config/cloudinary.js";
+import { User } from "../modles/user.js";
 
 const saveProfile = async (req, res) => {
     try {
         const {
-            cuisines, experience, location, pricePerDay, bio, availability, foodImages
+            cuisines, experience, location, pricePerDay, bio, availability, foodImages, profileImage
         } = req.body
         //check profile
         let profile = await CookProfile.findOne({ user: req.user.id });
         // if found then update
         if (profile) {
-            profile.cuisines = cuisines;
-            profile.experience = experience;
-            profile.location = location;
-            profile.pricePerDay = pricePerDay;
-            profile.bio = bio;
+            if (cuisines !== undefined) profile.cuisines = cuisines;
+            if (experience !== undefined) profile.experience = experience;
+            if (location !== undefined) profile.location = location;
+            if (pricePerDay !== undefined) profile.pricePerDay = pricePerDay;
+            if (bio !== undefined) profile.bio = bio;
             if (availability !== undefined) profile.availability = availability;
-            if (foodImages) profile.foodImages = foodImages;
+            if (foodImages !== undefined) profile.foodImages = foodImages;
+            if (profileImage !== undefined) profile.profileImage = profileImage;
             await profile.save();
         }
         // if not found then create new profile
         else {
             profile = await CookProfile.create({
                 user: req.user.id,
-                cuisines, experience, location, bio, pricePerDay, availability, foodImages: foodImages || []
+                cuisines, experience, location, bio, pricePerDay, availability, foodImages: foodImages || [], profileImage: profileImage || ""
             });
         }
         res.status(200).json(profile);
@@ -34,7 +36,9 @@ const saveProfile = async (req, res) => {
 
 const getMyProfile = async (req, res) => {
     try {
-        const profile = await CookProfile.findOne({ user: req.user.id }).populate("user", "name email");
+        const profile = await CookProfile.findOne({ user: req.user.id })
+            .populate("user", "name email")
+            .populate("reviews.user", "name");
         if (!profile) {
             return res.status(400).json({ message: "Profile not found" });
         }
@@ -49,7 +53,9 @@ const getMyProfile = async (req, res) => {
 
 const getAllCook = async (req, res) => {
     try {
-        const cooks = await CookProfile.find({ availability: true }).populate("user", "name email");
+        const cooks = await CookProfile.find({ availability: true })
+            .populate("user", "name email")
+            .populate("reviews.user", "name");
         res.json(cooks);
     } catch (error) {
         res.status(500).json({
@@ -70,9 +76,11 @@ const searchCooks = async (req, res) => {
             filter.cuisines = { $regex: cuisine, $options: 'i' };
         }
         if (maxPrice) {
-            filter.pricePerDay = { $lte: maxPrice };
+            filter.pricePerDay = { $lte: Number(maxPrice) };
         }
-        const cook = await CookProfile.find(filter).populate("user", "name email");
+        const cook = await CookProfile.find(filter)
+            .populate("user", "name email")
+            .populate("reviews.user", "name");
         res.json(cook);
     } catch (error) {
           res.status(500).json({
@@ -142,10 +150,18 @@ const uploadFoodImage = async (req, res) => {
             resource_type: "auto",
         });
 
-        res.status(200).json({
+        const newImage = {
             url: result.secure_url,
             caption: caption || ""
-        });
+        };
+
+        const profile = await CookProfile.findOne({ user: req.user.id });
+        if (profile) {
+            profile.foodImages.push(newImage);
+            await profile.save();
+        }
+
+        res.status(200).json(newImage);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -164,12 +180,97 @@ const removeFoodImage = async (req, res) => {
         profile.foodImages = profile.foodImages.filter(img => img.url !== imageUrl);
         await profile.save();
 
-        // Delete from Cloudinary
-        const publicId = imageUrl.split('/').pop().split('.')[0];
-        const folderPath = "findcook/food-images";
-        await cloudinary.uploader.destroy(`${folderPath}/${publicId}`);
+        // Delete from Cloudinary — extract full public ID from URL
+        const urlParts = imageUrl.split('/upload/');
+        const publicId = urlParts[1].replace(/\.[^/.]+$/, '').replace(/^v\d+\//, '');
+        await cloudinary.uploader.destroy(publicId);
 
         res.json({ message: "Image removed successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+const uploadProfileImage = async (req, res) => {
+    try {
+        const { imageData } = req.body;
+        
+        if (!imageData) {
+            return res.status(400).json({ message: "No image provided" });
+        }
+
+        const result = await cloudinary.uploader.upload(imageData, {
+            folder: "findcook/profile-images",
+            resource_type: "auto",
+        });
+
+        res.status(200).json({
+            url: result.secure_url
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+// Toggle a chef's profile in the user's favorites
+const toggleFavorite = async (req, res) => {
+  try {
+    const { cookId } = req.params;
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.favorites) {
+      user.favorites = [];
+    }
+
+    const isFav = user.favorites.includes(cookId);
+    if (isFav) {
+      // Remove from favorites
+      user.favorites = user.favorites.filter((id) => id.toString() !== cookId);
+    } else {
+      // Add to favorites
+      user.favorites.push(cookId);
+    }
+
+    await user.save();
+    res.json({
+      message: isFav ? "Removed from favorites" : "Added to favorites",
+      favorites: user.favorites,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get the user's list of favorite chefs (populated)
+const getFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate({
+      path: "favorites",
+      populate: { path: "user", select: "name email" },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user.favorites || []);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getCookById = async (req, res) => {
+    try {
+        const profile = await CookProfile.findById(req.params.id)
+            .populate("user", "name email")
+            .populate("reviews.user", "name");
+        if (!profile) {
+            return res.status(404).json({ message: "Cook not found" });
+        }
+        res.json(profile);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -183,5 +284,9 @@ export {
     toogleAvailability,
     addReview,
     uploadFoodImage,
-    removeFoodImage
+    removeFoodImage,
+    uploadProfileImage,
+    toggleFavorite,
+    getFavorites,
+    getCookById
 }

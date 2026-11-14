@@ -31,11 +31,15 @@ const CookPrfileSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      kMaxLength: 500,
+      maxlength: 500,
     },
     availability: {
       type: Boolean,
       default: true,
+    },
+    profileImage: {
+      type: String,
+      default: "",
     },
     foodImages: [
       {

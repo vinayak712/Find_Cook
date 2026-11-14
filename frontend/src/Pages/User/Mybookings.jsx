@@ -126,7 +126,7 @@ export default function MyBookings() {
                     <div className="flex items-center gap-4 flex-wrap">
                       <div className="text-right">
                         <p className="text-xs text-on-surface-variant">Proposed Price</p>
-                        <p className="font-bold text-primary text-lg">${booking.price || booking.cook?.pricePerDay}</p>
+                        <p className="font-bold text-primary text-lg">₹{booking.price || booking.cook?.pricePerDay}</p>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${cfg.cls}`}>
                         {cfg.label}

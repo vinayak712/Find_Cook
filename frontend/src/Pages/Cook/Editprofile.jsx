@@ -34,6 +34,7 @@ export default function EditProfile() {
     bio: '',
     availability: true,
     foodImages: [],
+    profileImage: '',
   });
 
   const [cuisineInput, setCuisineInput] = useState('');
@@ -55,6 +56,7 @@ export default function EditProfile() {
           bio: p.bio || '',
           availability: p.availability !== undefined ? p.availability : true,
           foodImages: p.foodImages || [],
+          profileImage: p.profileImage || '',
         });
       } catch {
         // No profile yet, start fresh
@@ -78,57 +80,60 @@ export default function EditProfile() {
   };
 
   const handleImageUpload = async (e) => {
-    const files = e.target.files;
-    if (files) {
-      for (let file of files) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          const base64 = event.target.result;
-          try {
-            // Upload to backend which sends to Cloudinary
-            const res = await api.post('/cook/upload-food-image', {
-              imageData: base64,
-              caption: ''
-            });
-            
-            // Add the returned URL to form
-            setForm(f => ({
-              ...f,
-              foodImages: [...f.foodImages, { url: res.data.url, caption: '' }]
-            }));
-          } catch (err) {
-            alert('Failed to upload image: ' + (err.response?.data?.message || err.message));
-          }
-        };
-        reader.readAsDataURL(file);
-      }
+    const files = Array.from(e.target.files);
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const base64 = event.target.result;
+        try {
+          const res = await api.post('/cook/upload-food-image', {
+            imageData: base64,
+            caption: ''
+          });
+          setForm(f => ({
+            ...f,
+            foodImages: [...f.foodImages, { url: res.data.url, caption: '' }]
+          }));
+        } catch (err) {
+          alert('Failed to upload image: ' + (err.response?.data?.message || err.message));
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const removeImage = async (index) => {
-    const imageUrl = form.foodImages[index].url;
-    try {
-      // Notify backend to delete from Cloudinary
-      await api.delete('/cook/remove-food-image', {
-        data: { imageUrl }
-      });
-      
-      // Remove from form
-      setForm(f => ({
-        ...f,
-        foodImages: f.foodImages.filter((_, i) => i !== index)
-      }));
-    } catch (err) {
-      alert('Failed to remove image: ' + (err.response?.data?.message || err.message));
-    }
-  };
-
-  const updateImageCaption = (index, caption) => {
+  const updateImageCaption = (index, val) => {
     setForm(f => {
       const updated = [...f.foodImages];
-      updated[index].caption = caption;
+      updated[index] = { ...updated[index], caption: val };
       return { ...f, foodImages: updated };
     });
+  };
+
+  const removeImage = (index) => {
+    setForm(f => ({
+      ...f,
+      foodImages: f.foodImages.filter((_, idx) => idx !== index)
+    }));
+  };
+
+  const handleProfileImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const base64 = event.target.result;
+        try {
+          const res = await api.post('/cook/upload-profile-image', {
+            imageData: base64
+          });
+          setForm(f => ({ ...f, profileImage: res.data.url }));
+        } catch (err) {
+          alert('Failed to upload profile image: ' + (err.response?.data?.message || err.message));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSave = async () => {
@@ -143,6 +148,7 @@ export default function EditProfile() {
         bio: form.bio,
         availability: form.availability,
         foodImages: form.foodImages,
+        profileImage: form.profileImage,
       });
       navigate('/cook/profile');
     } catch (err) {
@@ -154,7 +160,7 @@ export default function EditProfile() {
 
   const canGoNext = () => {
     if (step === 1) return true;
-    if (step === 2) return true; // Food gallery is optional
+    if (step === 2) return true; // Food Gallery is optional
     if (step === 3) return form.cuisines.length > 0 && form.experience;
     if (step === 4) return form.city && form.pricePerDay;
     return true;
@@ -236,6 +242,25 @@ export default function EditProfile() {
                   <h3 className="font-bold text-lg mb-1">Welcome, Chef! 👨‍🍳</h3>
                   <p className="text-white/80 text-sm">Let's craft your professional presence.</p>
                 </div>
+                
+                <div className="flex items-center gap-6 bg-white p-6 rounded-2xl border border-outline-variant">
+                  <div className="w-24 h-24 rounded-full bg-surface border-2 border-dashed border-outline-variant flex items-center justify-center overflow-hidden flex-shrink-0">
+                    {form.profileImage ? (
+                      <img src={form.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="material-symbols-outlined text-4xl text-on-surface-variant">person</span>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-on-background text-sm mb-1">Profile Photo</h4>
+                    <p className="text-xs text-on-surface-variant mb-3">Upload a professional photo to build trust with customers.</p>
+                    <label className="inline-block bg-primary/10 text-primary font-bold px-4 py-2 rounded-lg text-xs cursor-pointer hover:bg-primary/20 transition-colors">
+                      Upload Photo
+                      <input type="file" accept="image/*" onChange={handleProfileImageUpload} className="hidden" />
+                    </label>
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-bold text-on-surface-variant mb-2">Professional Bio</label>
                   <textarea
@@ -247,19 +272,6 @@ export default function EditProfile() {
                     className="w-full px-4 py-3 border border-outline-variant rounded-xl outline-none focus:ring-2 focus:ring-primary resize-none text-sm bg-white"
                   />
                   <p className="text-xs text-on-surface-variant text-right mt-1">{form.bio.length} / 500 characters</p>
-                </div>
-                <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-outline-variant">
-                  <div>
-                    <p className="font-bold text-sm text-on-background">Available for Hire</p>
-                    <p className="text-xs text-on-surface-variant">Turn off to pause new bookings</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setForm(f => ({ ...f, availability: !f.availability }))}
-                    className={`relative w-12 h-6 rounded-full transition-colors ${form.availability ? 'bg-primary' : 'bg-gray-300'}`}
-                  >
-                    <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.availability ? 'translate-x-7' : 'translate-x-1'}`} />
-                  </button>
                 </div>
               </div>
             )}
@@ -328,7 +340,7 @@ export default function EditProfile() {
             )}
 
             {/* Step 3: Culinary Expertise */}
-            {step === 2 && (
+            {step === 3 && (
               <div className="max-w-xl space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-on-surface-variant mb-3">Cuisines You Specialize In</label>
@@ -410,9 +422,9 @@ export default function EditProfile() {
             {step === 4 && (
               <div className="max-w-xl space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-on-surface-variant mb-2">Daily Rate (₹ or $)</label>
+                  <label className="block text-sm font-bold text-on-surface-variant mb-2">Daily Rate (₹)</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold text-lg">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold text-lg">₹</span>
                     <input
                       type="number"
                       min="0"
@@ -435,6 +447,21 @@ export default function EditProfile() {
                     placeholder="e.g. Maharashtra"
                     className="w-full px-4 py-3 border border-outline-variant rounded-xl outline-none focus:ring-2 focus:ring-primary text-sm bg-white"
                   />
+                </div>
+
+                {/* Availability toggle */}
+                <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-outline-variant">
+                  <div>
+                    <p className="font-bold text-sm text-on-background">Available for Hire</p>
+                    <p className="text-xs text-on-surface-variant">Turn off to pause new bookings</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm(f => ({ ...f, availability: !f.availability }))}
+                    className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${form.availability ? 'bg-primary' : 'bg-gray-300'}`}
+                  >
+                    <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200 ${form.availability ? 'translate-x-7' : 'translate-x-1'}`} />
+                  </button>
                 </div>
 
                 {/* Benefits grid */}
@@ -485,7 +512,7 @@ export default function EditProfile() {
                     <span className="material-symbols-outlined text-primary">payments</span>
                     <div>
                       <p className="text-xs text-on-surface-variant">Daily Rate</p>
-                      <p className="font-bold text-sm text-primary">{form.pricePerDay ? `$${form.pricePerDay}` : 'Not set'}</p>
+                      <p className="font-bold text-sm text-primary">{form.pricePerDay ? `₹${form.pricePerDay}` : 'Not set'}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 py-3">

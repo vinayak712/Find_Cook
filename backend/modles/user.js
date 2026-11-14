@@ -20,7 +20,11 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required:true,
-    }
+    },
+    favorites: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CookProfile"
+    }]
   },
   { timestamps: true },
 );

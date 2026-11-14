@@ -8,7 +8,11 @@ export default function CookCard({ cook }) {
     <div className="bg-white rounded-[1rem] shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all flex flex-col h-full">
       <div className="aspect-[4/5] relative overflow-hidden bg-primary-container/20">
         <div className="w-full h-full flex items-center justify-center text-primary/40 group-hover:scale-105 transition-transform duration-500">
-          <span className="text-6xl font-display-lg">{user?.name?.charAt(0)?.toUpperCase() || 'C'}</span>
+          {cook.profileImage ? (
+            <img src={cook.profileImage} alt={user?.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-6xl font-display-lg">{user?.name?.charAt(0)?.toUpperCase() || 'C'}</span>
+          )}
         </div>
         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
           <span className="material-symbols-outlined text-orange-500 text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
@@ -42,7 +46,7 @@ export default function CookCard({ cook }) {
         
         <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
           <div className="text-primary font-bold text-lg">
-            ${pricePerDay}<span className="text-sm text-gray-500 font-normal">/day</span>
+            ₹{pricePerDay}<span className="text-sm text-gray-500 font-normal">/day</span>
           </div>
           <Link 
             to={`/cook/${_id}`}
